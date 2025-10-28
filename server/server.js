@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const http = require('http');
 
 require('dotenv').config();
 const app = express();
@@ -8,7 +9,7 @@ const app = express();
 // Middleware
 app.use(express.json());
 app.use(cors());
-
+const server = http.createServer(app);
 
 // --- Routes ---
 // Health check route
