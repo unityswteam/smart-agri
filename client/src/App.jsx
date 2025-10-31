@@ -1,5 +1,3 @@
-import { useState } from 'react'
-
 import RolesList from './pages/Roles'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
