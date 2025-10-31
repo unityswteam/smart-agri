@@ -19,6 +19,10 @@ app.use(cors());
 app.get('/health', (req, res) => res.json({ status: 'ok' }));
 
 const server = http.createServer(app);
+// MongoDB Connection
+mongoose.connect(process.env.MONGO_URI)
+  .then(async () => {
+    console.log('✅ MongoDB connected');
 
 const PORT = process.env.PORT || 5000;
 const HOST = process.env.HOST || '127.0.0.1';
@@ -27,6 +31,7 @@ const HOST = process.env.HOST || '127.0.0.1';
 app.use('/api/categories', categoryRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/roles', roleRoutes);
+
 const startServer = async () => {
   try {
     console.log('🔄 Connecting to database...');
@@ -43,5 +48,10 @@ const startServer = async () => {
     process.exit(1);
   }
 };
-
 startServer();
+  })
+  .catch((error) => {
+    console.error('❌ MongoDB connection error:', error);
+    process.exit(1);
+  });
+  
