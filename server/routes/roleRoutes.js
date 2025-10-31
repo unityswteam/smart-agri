@@ -10,10 +10,10 @@ import {
 const router = express.Router();
 
 // Base path: /api/roles
-router.post("/", createRole);
+router.post("/add", createRole);
 router.get("/", getRoles);
 router.get("/:id", getRoleById);
-router.put("/:id", updateRole);
-router.delete("/:id", deleteRole);
+router.put("/edit/:id", updateRole);
+router.delete("/delete/:id", deleteRole);
 
 export default router;
