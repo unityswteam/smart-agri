@@ -1,7 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-const NODE_URL = import.meta.env.NODE_URL;
-const REACT_URL = import.meta.env.REACT_URL;
+import { initialCategoriesData } from "../static-data/categories.js";
+const NODE_URL = import.meta.env.VITE_NODE_URL;
+const REACT_URL = import.meta.env.VITE_REACT_URL;
 
 const initialState = {
   categories: [],
@@ -12,10 +13,12 @@ const initialState = {
 export const addCategory = createAsyncThunk(
   "data/addCategory",
   async ({ name, description }) => {
+    console.log(`Adding category ${name} with description ${description} to:`, `${NODE_URL}/categories/add`);
     await axios.post(`${NODE_URL}/categories/add`, {
       name,
       description,
     });
+    console.log(`Adding category ${name} with description ${description} to:`, `${NODE_URL}/categories/add`);
 
     return { name, description };
   }
@@ -38,7 +41,7 @@ export const updateCategory = createAsyncThunk(
       description,
     });
 
-    return { name, description, id };
+    return { name, description, _id: id };
   }
 );
 
@@ -47,7 +50,7 @@ export const fetchCategories = createAsyncThunk(
   async () => {
     const result = await axios.get(`${NODE_URL}/categories`);
 
-    return result.data;
+    return result.data.data;
   }
 );
 

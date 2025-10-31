@@ -1,10 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { initialRolesData } from "../static-data/roles.js";
+
 const NODE_URL = import.meta.env.NODE_URL;
 const REACT_URL = import.meta.env.REACT_URL;
 
 const initialState = {
-  roles: [],
+  roles: [initialRolesData],
   loading: false,
   error: "",
 };

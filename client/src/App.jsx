@@ -1,4 +1,5 @@
 import RolesList from './pages/Roles'
+import CategoryList from './pages/Categories'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
 function App() {
@@ -8,8 +9,8 @@ function App() {
     <div>
       <Routes>
         <Route path='/' element={<RolesList/>}/>
-        {/* <Route path='/roles' element={<Home/>}/>
-        <Route path='/categories' element={<Login/>}/> */}
+        <Route path='/roles' element={<RolesList/>}/>
+        <Route path='/categories' element={<CategoryList/>}/>
 
       </Routes>
     </div>
