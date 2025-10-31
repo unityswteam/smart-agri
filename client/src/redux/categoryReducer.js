@@ -12,11 +12,11 @@ const initialState = {
 export const addCategory = createAsyncThunk(
   "data/addCategory",
   async ({ name, description }) => {
-    console.log({name:name});
     await axios.post(`${NODE_URL}/categories/add`, {
       name,
       description,
     });
+    console.log(`Adding category ${name} with description ${description} to:`, `${NODE_URL}/categories/add`);
 
     return { name, description };
   }
@@ -39,7 +39,7 @@ export const updateCategory = createAsyncThunk(
       description,
     });
 
-    return { name, description, id };
+    return { name, description, _id: id };
   }
 );
 
@@ -48,7 +48,7 @@ export const fetchCategories = createAsyncThunk(
   async () => {
     const result = await axios.get(`${NODE_URL}/categories`);
 
-    return result.data;
+    return result.data.data;
   }
 );
 

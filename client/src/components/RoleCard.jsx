@@ -82,7 +82,7 @@ const RoleCard = ({ role, onEdit, onDelete }) => {
               fontWeight: 'bold'
             }}
           >
-            {role.name.charAt(0)}
+            {role.name?.charAt(0)}
           </Avatar>
           <Typography 
             variant="h5" 

@@ -3,8 +3,10 @@ import axios from "axios";
 const NODE_URL = import.meta.env.VITE_NODE_URL;
 const REACT_URL = import.meta.env.VITE_REACT_URL;
 
+import { initialRolesData } from "../static-data/roles.js";
+
 const initialState = {
-  roles: [],
+  roles: [initialRolesData],
   loading: false,
   error: "",
 };

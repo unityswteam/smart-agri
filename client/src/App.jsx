@@ -6,6 +6,7 @@ import RoleList from "./pages/RoleList";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { fetchRoles } from "./redux/roleReducer";
+import CategoryList from './pages/Categories'
 
 function App() {
   const dispatch = useDispatch();
@@ -20,9 +21,11 @@ function App() {
           <Route path="/" element={<RolesManagement />} />
           <Route path="/roles" element={<RoleList />} />
           <Route path="/roles/edit/:id" element={<EditRole />} />
+          <Route path='/categories' element={<CategoryList/>}/>
           <Route path="/roles/create" element={<CreateRole />} />
         </Routes>
       </div>
+    
     </BrowserRouter>
   );
 }
