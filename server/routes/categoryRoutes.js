@@ -10,10 +10,10 @@ import {
 const router = express.Router();
 
 // Base path: /api/categories
-router.post("/", createCategory);
+router.post("/add", createCategory);
 router.get("/", getCategories);
 router.get("/:id", getCategoryById);
-router.put("/:id", updateCategory);
-router.delete("/:id", deleteCategory);
+router.put("/edit/:id", updateCategory);
+router.delete("/delete/:id", deleteCategory);
 
 export default router;
