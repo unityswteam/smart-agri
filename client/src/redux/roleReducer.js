@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-const NODE_URL = import.meta.env.NODE_URL;
-const REACT_URL = import.meta.env.REACT_URL;
+const NODE_URL = import.meta.env.VITE_NODE_URL;
+const REACT_URL = import.meta.env.VITE_REACT_URL;
 
 const initialState = {
   roles: [],
@@ -12,11 +12,14 @@ const initialState = {
 export const addRole = createAsyncThunk(
   "data/addRole",
   async ({ name, description }) => {
+
+    console.log(name, description);
     await axios.post(`${NODE_URL}/roles/add`, {
       name,
       description,
     });
 
+    console.log(name, description);
     return { name, description };
   }
 );
@@ -47,11 +50,12 @@ export const fetchRoles = createAsyncThunk(
   async () => {
     const result = await axios.get(`${NODE_URL}/roles`);
 
+    console.log({resultdata:result.data});
     return result.data;
   }
 );
 
-const roleReducer = createSlice({
+export const roleReducer = createSlice({
   name: "role",
   initialState,
   reducers: {},

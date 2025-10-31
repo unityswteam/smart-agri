@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-const NODE_URL = import.meta.env.NODE_URL;
-const REACT_URL = import.meta.env.REACT_URL;
+const NODE_URL = import.meta.env.VITE_NODE_URL;
+const REACT_URL = import.meta.env.VITE_REACT_URL;
 
 const initialState = {
   categories: [],
@@ -12,6 +12,7 @@ const initialState = {
 export const addCategory = createAsyncThunk(
   "data/addCategory",
   async ({ name, description }) => {
+    console.log({name:name});
     await axios.post(`${NODE_URL}/categories/add`, {
       name,
       description,
