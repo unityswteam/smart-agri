@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { initialCategoriesData } from "../static-data/categories.js";
 const NODE_URL = import.meta.env.VITE_NODE_URL;
 const REACT_URL = import.meta.env.VITE_REACT_URL;
 
