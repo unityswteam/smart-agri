@@ -28,41 +28,27 @@ import {
   Cancel as CancelIcon,
 } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
-import { addCategory, deleteCategory, fetchCategories, updateCategory } from "../redux/categoryReducer";  // assume you create this
-
+import { addCategory, deleteCategory, fetchCategories, updateCategory } from "../redux/categoryReducer";
 
 const CategoriesManagement = () => {
   const dispatch = useDispatch();
+  const { categories } = useSelector((state) => state.category);
+
+  const [openDialog, setOpenDialog] = useState(false);
+  const [editingCategory, setEditingCategory] = useState(null);
+  const [openConfirm, setOpenConfirm] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [snackbar, setSnackbar] = useState({ open: false, message: "", severity: "success" });
+
+  const [formData, setFormData] = useState({ name: "", description: "", color: "#2196f3" });
+
   useEffect(() => {
-    // Fetch categories from backend when component mounts
     dispatch(fetchCategories());
   }, [dispatch]);
 
-  const categories = useSelector((state) => state?.category.categories);
-  console.log(categories);
-
-  const [localCategories, setCategories] = useState(categories || []);
-  const [openDialog, setOpenDialog] = useState(false);
-  const [editingCategory, setEditingCategory] = useState(null);
-  const [snackbar, setSnackbar] = useState({
-    open: false,
-    message: "",
-    severity: "success",
-  });
-
-  const [formData, setFormData] = useState({
-    name: "",
-    description: "",
-    color: "#2196f3",
-  });
-
   const handleOpenAdd = () => {
     setEditingCategory(null);
-    setFormData({
-      name: "",
-      description: "",
-      color: "#2196f3",
-    });
+    setFormData({ name: "", description: "", color: "#2196f3" });
     setOpenDialog(true);
   };
 
@@ -71,35 +57,26 @@ const CategoriesManagement = () => {
     setFormData({
       name: category.name,
       description: category.description,
-      color: category.color,
+      color: category.color || "#2196f3",
     });
     setOpenDialog(true);
   };
 
-  const handleCloseDialog = () => {
-    setOpenDialog(false);
-    setEditingCategory(null);
-  };
+  const handleCloseDialog = () => setOpenDialog(false);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const showSnackbar = (message, severity) => {
     setSnackbar({ open: true, message, severity });
   };
 
-  const handleCloseSnackbar = () => {
-    setSnackbar((prev) => ({ ...prev, open: false }));
-  };
+  const handleCloseSnackbar = () => setSnackbar((prev) => ({ ...prev, open: false }));
 
   const getContrastColor = (hexcolor) => {
-    if (!hexcolor) return "#000000"; // Return a default color if hexcolor is invalid
-
+    if (!hexcolor) return "#000";
     const color = hexcolor.replace("#", "");
     const r = parseInt(color.substr(0, 2), 16);
     const g = parseInt(color.substr(2, 2), 16);
@@ -108,107 +85,101 @@ const CategoriesManagement = () => {
     return brightness > 128 ? "#000000" : "#FFFFFF";
   };
 
-
   const handleSave = () => {
     if (!formData.name.trim() || !formData.description.trim()) {
       showSnackbar("Please fill in all required fields", "error");
       return;
     }
 
-    dispatch(addCategory({ name: formData.name, description: formData.description, color: formData.color }));
-
     if (editingCategory) {
-      setCategories((prev) =>
-        prev.map((cat) =>
-          cat._id === editingCategory._id ? { ...cat, ...formData } : cat
-        )
-      );
-      dispatch(updateCategory({ id: editingCategory._id, name: formData.name, description: formData.description, color: formData.color }));
+      dispatch(updateCategory({ id: editingCategory._id, ...formData }));
       showSnackbar("Category updated successfully!", "success");
     } else {
-      const newCategory = {
-        ...formData,
-        id: Math.max(...Array.isArray(categories) ? categories.map((c) => c.id) : []) + 1,
-      };
-      setCategories((prev) => [...prev, newCategory]);
+      dispatch(addCategory(formData));
       showSnackbar("Category added successfully!", "success");
     }
 
     handleCloseDialog();
   };
 
-  const handleDelete = (categoryId) => {
-    setCategories((prev) => prev.filter((cat) => cat.id !== categoryId));
-    dispatch(deleteCategory(categoryId));
-    showSnackbar("Category deleted successfully!", "success");
+  const handleConfirmDelete = (category) => {
+    setSelectedCategory(category);
+    setOpenConfirm(true);
+  };
+
+  const confirmDelete = () => {
+    if (selectedCategory) {
+      dispatch(deleteCategory(selectedCategory._id));
+      showSnackbar("Category deleted successfully!", "success");
+      setOpenConfirm(false);
+    }
   };
 
   return (
-    <Container maxWidth="lg" sx={{ py: 4 }}>
-      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 6 }}>
+    <Container maxWidth="lg" sx={{ py: 5 }}>
+      {/* Header */}
+      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 5 }}>
         <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-          <Avatar sx={{ bgcolor: "primary.main", width: 40, height: 40 }}>
-            C
-          </Avatar>
+          <Avatar sx={{ bgcolor: "primary.main", width: 50, height: 50 }}>C</Avatar>
           <Box>
-            <Typography variant="h3" component="h1" fontWeight="bold">
+            <Typography variant="h4" fontWeight="bold">
               Category Management
             </Typography>
-            <Typography variant="h6" color="text.secondary">
-              Manage your content categories
+            <Typography variant="subtitle1" color="text.secondary">
+              Manage and organize your content categories efficiently
             </Typography>
           </Box>
         </Box>
 
         <Tooltip title="Add New Category">
-          <Fab color="primary" onClick={handleOpenAdd} sx={{ boxShadow: 3 }}>
+          <Fab color="primary" onClick={handleOpenAdd}>
             <AddIcon />
           </Fab>
         </Tooltip>
       </Box>
 
+      {/* Categories Grid */}
       <Grid container spacing={3}>
-        {Array.isArray(categories) && categories.map((category) => (
-          <Grid item xs={12} sm={6} md={4} key={category?.id}>
-            <Card sx={{
-              height: "100%",
-              transition: "all 0.3s ease",
-              border: `2px solid transparent`,
-              background: "linear-gradient(145deg, #f5f5f5, #ffffff)",
-              "&:hover": {
-                transform: "translateY(-8px)",
-                boxShadow: "0 12px 24px rgba(0,0,0,0.15)",
-                border: `2px solid ${category?.color}40`,
-              },
-            }}>
-              <CardContent sx={{ p: 3, position: "relative" }}>
-                <Box sx={{ position: "absolute", top: 16, right: 16, display: "flex", gap: 1 }}>
-                  <Tooltip title="Edit Category">
-                    <IconButton size="small" onClick={() => handleOpenEdit(category)} sx={{ bgcolor: "primary.main", color: "white", "&:hover": { bgcolor: "primary.dark" } }}>
-                      <EditIcon fontSize="small" />
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip title="Delete Category">
-                    <IconButton size="small" onClick={() => handleDelete(category?._id)} sx={{ bgcolor: "error.main", color: "white", "&:hover": { bgcolor: "error.dark" } }}>
-                      <DeleteIcon fontSize="small" />
-                    </IconButton>
-                  </Tooltip>
+        {categories?.map((category) => (
+          <Grid item xs={12} sm={6} md={4} key={category._id}>
+            <Card
+              sx={{
+                height: "100%",
+                p: 2,
+                borderRadius: 3,
+                transition: "0.3s",
+                "&:hover": { boxShadow: 6, transform: "translateY(-4px)" },
+              }}
+            >
+              <CardContent>
+                <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
+                  <Avatar sx={{ bgcolor: category.color }}>{category.name.charAt(0)}</Avatar>
+                  <Box>
+                    <Tooltip title="Edit">
+                      <IconButton onClick={() => handleOpenEdit(category)} color="primary">
+                        <EditIcon />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Delete">
+                      <IconButton onClick={() => handleConfirmDelete(category)} color="error">
+                        <DeleteIcon />
+                      </IconButton>
+                    </Tooltip>
+                  </Box>
                 </Box>
-                <Box sx={{ display: "flex", alignItems: "center", mb: 3, pr: 8 }}>
-                  <Avatar sx={{ bgcolor: category?.color, width: 50, height: 50, mr: 2, fontSize: "1.2rem", fontWeight: "bold" }}>
-                    {category.name.charAt(0)}
-                  </Avatar>
-                  <Typography variant="h5" component="h2" sx={{ fontWeight: "bold", background: `linear-gradient(45deg, ${category.color}, ${category.color}dd)`, backgroundClip: "text", WebkitBackgroundClip: "text", color: "transparent" }}>
-                    {category.name}
-                  </Typography>
-                </Box>
-                <Typography variant="body2" color="text.secondary" sx={{ mb: 3, lineHeight: 1.6, minHeight: 60 }}>
-                  {category?.description}
+                <Typography variant="h6">{category.name}</Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {category.description}
                 </Typography>
-                <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                  <Chip label={category?.name} size="medium" sx={{ bgcolor: category?.color, color: getContrastColor(category?.color), fontWeight: "bold", fontSize: "0.8rem" }} />
-                  <Typography variant="caption" color="text.secondary">ID: {category._id}</Typography>
-                </Box>
+                <Chip
+                  label={category.name}
+                  sx={{
+                    mt: 2,
+                    bgcolor: category.color,
+                    color: getContrastColor(category.color),
+                    fontWeight: "bold",
+                  }}
+                />
               </CardContent>
             </Card>
           </Grid>
@@ -290,20 +261,43 @@ const CategoriesManagement = () => {
             </Grid>
           </Box>
         </DialogContent>
-        <DialogActions sx={{ p: 3, borderTop: "1px solid", borderColor: "divider" }}>
-          <Button startIcon={<CancelIcon />} onClick={handleCloseDialog} color="inherit" sx={{ px: 3 }}>
+        <DialogActions sx={{ px: 4, py: 3 }}>
+          <Button startIcon={<CancelIcon />} onClick={handleCloseDialog}>
             Cancel
           </Button>
-          <Button startIcon={<SaveIcon />} onClick={handleSave} variant="contained" sx={{ minWidth: 120, px: 3 }}>
+          <Button
+            startIcon={<SaveIcon />}
+            onClick={handleSave}
+            variant="contained"
+            sx={{ px: 4, py: 1.5 }}
+          >
             {editingCategory ? "Update" : "Save"}
           </Button>
         </DialogActions>
       </Dialog>
 
-      <Snackbar open={snackbar.open} autoHideDuration={4000} onClose={handleCloseSnackbar} anchorOrigin={{ vertical: "bottom", horizontal: "right" }}>
-        <Alert onClose={handleCloseSnackbar} severity={snackbar.severity} sx={{ width: "100%" }}>
-          {snackbar.message}
-        </Alert>
+      {/* Delete Confirmation */}
+      <Dialog open={openConfirm} onClose={() => setOpenConfirm(false)} maxWidth="xs">
+        <DialogTitle>Confirm Delete</DialogTitle>
+        <DialogContent sx={{ py: 3 }}>
+          Are you sure you want to delete <b>{selectedCategory?.name}</b>?
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenConfirm(false)}>Cancel</Button>
+          <Button variant="contained" color="error" onClick={confirmDelete}>
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Snackbar */}
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={4000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+      >
+        <Alert severity={snackbar.severity}>{snackbar.message}</Alert>
       </Snackbar>
     </Container>
   );

@@ -3,7 +3,7 @@ import Category from '../models/Category.js';
 // Create a new category
 export const createCategory = async (req, res) => {
   try {
-    const { name, description } = req.body;
+    const { name, description, color } = req.body;
 
     if (!name || !name.trim()) {
       return res.status(400).json({ message: 'Name is required' });
@@ -14,7 +14,7 @@ export const createCategory = async (req, res) => {
       return res.status(409).json({ message: 'Category with this name already exists' });
     }
 
-    const category = await Category.create({ name: name.trim(), description });
+    const category = await Category.create({ name: name.trim(), description, color });
     return res.status(201).json({ message: 'Category created successfully', data: category });
   } catch (error) {
     return res.status(500).json({ message: 'Failed to create category', error: error.message });
@@ -73,11 +73,12 @@ export const getCategoryById = async (req, res) => {
 export const updateCategory = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, description } = req.body;
+    const { name, description, color } = req.body;
 
     const update = {};
     if (name !== undefined) update.name = name.trim();
     if (description !== undefined) update.description = description;
+    if (color !== undefined) update.color = color;
 
     if (update.name) {
       const exists = await Category.findOne({ _id: { $ne: id }, name: update.name });
