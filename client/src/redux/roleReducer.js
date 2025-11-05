@@ -9,6 +9,7 @@ const initialState = {
   roles: [initialRolesData],
   loading: false,
   error: "",
+  currentRole:null
 };
 
 export const addRole = createAsyncThunk(
@@ -28,7 +29,8 @@ export const addRole = createAsyncThunk(
 
 export const deleteRole = createAsyncThunk(
   "data/deleteRole",
-  async (id) => {
+  async ({id}) => {
+    console.log({delId:id});
     await axios.delete(`${NODE_URL}/roles/delete/${id}`);
 
     return id;
@@ -38,6 +40,7 @@ export const deleteRole = createAsyncThunk(
 export const updateRole = createAsyncThunk(
   "data/updateRole",
   async ({ id, name, description }) => {
+    console.log({id, name, description });
     await axios.put(`${NODE_URL}/roles/edit/${id}`, {
       name,
       description,
@@ -57,6 +60,18 @@ export const fetchRoles = createAsyncThunk(
   }
 );
 
+
+export const getRoleById = createAsyncThunk(
+  "data/getRoleById",
+  async ({id}) => {
+    console.log({tid:id});
+    const result = await axios.get(`${NODE_URL}/roles/${id}`);
+
+    console.log({resultdata:result.data});
+    return result.data;
+  }
+);
+
 export const roleReducer = createSlice({
   name: "role",
   initialState,
@@ -65,6 +80,12 @@ export const roleReducer = createSlice({
     builder
       .addCase(fetchRoles.fulfilled, (state, action) => {
         state.roles = action.payload;
+        state.loading = false;
+        state.error = "";
+      })
+
+      .addCase(getRoleById.fulfilled, (state, action) => {
+        state.currentRole = action.payload.data;
         state.loading = false;
         state.error = "";
       })

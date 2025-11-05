@@ -1,232 +1,178 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
 import {
   Container,
-  Box,
-  Typography,
-  Button,
   Paper,
-  Snackbar,
-  Alert
+  TextField,
+  Button,
+  Typography,
+  Box,
+  Alert,
+  CircularProgress,
 } from '@mui/material';
-import {
-  ArrowBack as ArrowBackIcon,
-  Save as SaveIcon,
-  Security as SecurityIcon
-} from '@mui/icons-material';
-import RoleForm from '../components/RoleForm';
-
-// Mock data - in real app, you'd fetch this from an API
-const initialRolesData = [
-  {
-    id: 1,
-    name: 'Administrator',
-    description: 'Full system access with all permissions including user management and system configuration.',
-    color: '#f44336',
-    permissions: ['all']
-  },
-  {
-    id: 2,
-    name: 'Manager',
-    description: 'Can manage teams, projects, and assign tasks to team members.',
-    color: '#2196f3',
-    permissions: ['manage_teams', 'manage_projects', 'assign_tasks']
-  },
-  {
-    id: 3,
-    name: 'Developer',
-    description: 'Access to development tools, code repositories, and project tasks.',
-    color: '#4caf50',
-    permissions: ['development_tools', 'code_access', 'task_access']
-  },
-  {
-    id: 4,
-    name: 'Viewer',
-    description: 'Read-only access to view projects and reports without editing capabilities.',
-    color: '#ff9800',
-    permissions: ['read_only']
-  }
-];
+import { Save, Cancel } from '@mui/icons-material';
+import { useNavigate, useParams } from 'react-router-dom';
+import { fetchRoles, getRoleById, updateRole } from '../redux/roleReducer';
+import { useDispatch, useSelector } from 'react-redux';
 
 const EditRole = () => {
-  const navigate = useNavigate();
-  const { id } = useParams();
-  const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
-  const [role, setRole] = useState(null);
-  const [loading, setLoading] = useState(true);
-  
   const [formData, setFormData] = useState({
     name: '',
-    description: '',
-    color: '#2196f3',
-    permissions: []
+    description: ''
   });
+  const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [fetchLoading, setFetchLoading] = useState(true);
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
+  const { id } = useParams();
+  console.log({id:id});
+  const dispatch = useDispatch();    
+  const {roles, currentRole} = useSelector((state) => state.role)
+  console.log({currentRole:currentRole});
 
   useEffect(() => {
-    // Simulate API fetch
-    const fetchRole = async () => {
-      setLoading(true);
-      try {
-        // In real app: const response = await fetch(`/api/roles/${id}`);
-        const foundRole = initialRolesData.find(r => r.id === parseInt(id));
-        if (foundRole) {
-          setRole(foundRole);
-          setFormData({
-            name: foundRole.name,
-            description: foundRole.description,
-            color: foundRole.color,
-            permissions: [...foundRole.permissions]
-          });
-        } else {
-          showSnackbar('Role not found', 'error');
-          navigate('/roles');
-        }
-      } catch (error) {
-        showSnackbar('Error loading role', 'error');
-        navigate('/roles');
-      } finally {
-        setLoading(false);
-      }
-    };
+    dispatch(getRoleById({id}))
+  }, [id, dispatch]);
 
-    if (id) {
-      fetchRole();
+  // Populate form with currentRole data when it's available
+  useEffect(() => {
+    if (currentRole && currentRole._id === id) {
+      setFormData({
+        name: currentRole.name || '',
+        description: currentRole.description || ''
+      });
+      setFetchLoading(false);
     }
-  }, [id, navigate]);
+  }, [currentRole, id]);
 
-  const handleInputChange = (e) => {
+  const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
       [name]: value
     }));
-  };
-
-  const handlePermissionsChange = (e) => {
-    const { value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      permissions: typeof value === 'string' ? value.split(',') : value
-    }));
-  };
-
-  const handleSave = () => {
-    if (!formData.name.trim() || !formData.description.trim()) {
-      showSnackbar('Please fill in all required fields', 'error');
-      return;
-    }
-
-    // Here you would typically update to your backend
-    console.log('Updating role:', formData);
-    showSnackbar('Role updated successfully!', 'success');
     
-    // Navigate back after a short delay
-    setTimeout(() => {
+    // Clear error when user starts typing
+    if (errors[name]) {
+      setErrors(prev => ({
+        ...prev,
+        [name]: ''
+      }));
+    }
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+    
+    if (!formData.name.trim()) {
+      newErrors.name = 'Role name is required';
+    } else if (formData.name.trim().length < 2) {
+      newErrors.name = 'Role name must be at least 2 characters long';
+    }
+    
+    if (!formData.description.trim()) {
+      newErrors.description = 'Description is required';
+    } else if (formData.description.trim().length < 10) {
+      newErrors.description = 'Description must be at least 10 characters long';
+    }
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    if (!validateForm()) return;
+    
+    setLoading(true);
+    try {
+      await dispatch(updateRole({id, name:formData.name, description:formData.description}))
+      dispatch(fetchRoles())
       navigate('/roles');
-    }, 1500);
+    } catch (err) {
+      setError('Failed to update role');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleCancel = () => {
     navigate('/roles');
   };
 
-  const showSnackbar = (message, severity) => {
-    setSnackbar({ open: true, message, severity });
-  };
-
-  const handleCloseSnackbar = () => {
-    setSnackbar(prev => ({ ...prev, open: false }));
-  };
-
-  if (loading) {
-    return (
-      <Container maxWidth="md" sx={{ py: 4 }}>
-        <Typography>Loading...</Typography>
-      </Container>
-    );
-  }
-
-  if (!role) {
-    return (
-      <Container maxWidth="md" sx={{ py: 4 }}>
-        <Typography>Role not found</Typography>
-      </Container>
-    );
-  }
+  // if (fetchLoading) {
+  //   return (
+  //     <Box display="flex" justifyContent="center" alignItems="center" minHeight="400px">
+  //       <CircularProgress />
+  //     </Box>
+  //   );
+  // }
 
   return (
-    <Container maxWidth="md" sx={{ py: 4 }}>
-      {/* Header */}
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 4 }}>
-        <Button
-          startIcon={<ArrowBackIcon />}
-          onClick={handleCancel}
-          color="inherit"
-        >
-          Back to Roles
-        </Button>
-        <SecurityIcon sx={{ fontSize: 32, color: 'primary.main' }} />
-        <Box>
-          <Typography variant="h4" component="h1" fontWeight="bold">
-            Edit Role
-          </Typography>
-          <Typography variant="subtitle1" color="text.secondary">
-            Update role details and permissions
-          </Typography>
-        </Box>
-      </Box>
-
-      {/* Form */}
-      <Paper elevation={2} sx={{ mb: 3 }}>
-        <RoleForm 
-          formData={formData}
-          onInputChange={handleInputChange}
-          onPermissionsChange={handlePermissionsChange}
-          isEditing={true}
-        />
+    <Container maxWidth="md" sx={{ mt: 4, mb: 4 }}>
+      <Paper elevation={3} sx={{ p: 4 }}>
+        <Typography variant="h4" component="h1" gutterBottom>
+          Edit Role
+        </Typography>
         
-        {/* Actions */}
-        <Box sx={{ 
-          p: 3, 
-          borderTop: '1px solid', 
-          borderColor: 'divider',
-          display: 'flex',
-          justifyContent: 'flex-end',
-          gap: 2
-        }}>
-          <Button 
-            onClick={handleCancel}
-            color="inherit"
-            sx={{ px: 4 }}
-          >
-            Cancel
-          </Button>
-          <Button 
-            startIcon={<SaveIcon />} 
-            onClick={handleSave}
-            variant="contained"
-            sx={{ px: 4 }}
-          >
-            Update Role
-          </Button>
+        {error && (
+          <Alert severity="error" sx={{ mb: 3 }} onClose={() => setError('')}>
+            {error}
+          </Alert>
+        )}
+        
+        <Box component="form" onSubmit={handleSubmit} noValidate>
+          <TextField
+            fullWidth
+            label="Role Name"
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+            error={!!errors.name}
+            helperText={errors.name}
+            margin="normal"
+            required
+            disabled={loading}
+            placeholder={currentRole?.name || ''}
+          />
+          
+          <TextField
+            fullWidth
+            label="Description"
+            name="description"
+            value={formData.description}
+            onChange={handleChange}
+            error={!!errors.description}
+            helperText={errors.description}
+            margin="normal"
+            multiline
+            rows={4}
+            required
+            disabled={loading}
+            placeholder={currentRole?.description || ''}
+          />
+          
+          <Box sx={{ mt: 3, display: 'flex', gap: 2, justifyContent: 'flex-end' }}>
+            <Button
+              variant="outlined"
+              startIcon={<Cancel />}
+              onClick={handleCancel}
+              disabled={loading}
+            >
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              variant="contained"
+              startIcon={loading ? <CircularProgress size={20} /> : <Save />}
+              disabled={loading}
+            >
+              {loading ? 'Updating...' : 'Update Role'}
+            </Button>
+          </Box>
         </Box>
       </Paper>
-
-      {/* Snackbar */}
-      <Snackbar 
-        open={snackbar.open} 
-        autoHideDuration={4000} 
-        onClose={handleCloseSnackbar}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-      >
-        <Alert 
-          onClose={handleCloseSnackbar} 
-          severity={snackbar.severity} 
-          sx={{ width: '100%' }}
-        >
-          {snackbar.message}
-        </Alert>
-      </Snackbar>
     </Container>
   );
 };

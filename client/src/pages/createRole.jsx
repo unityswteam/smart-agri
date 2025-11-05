@@ -1,155 +1,152 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
 import {
   Container,
-  Box,
-  Typography,
-  Button,
   Paper,
-  Snackbar,
-  Alert
+  TextField,
+  Button,
+  Typography,
+  Box,
+  Alert,
+  CircularProgress,
 } from '@mui/material';
-import {
-  ArrowBack as ArrowBackIcon,
-  Save as SaveIcon,
-  Security as SecurityIcon
-} from '@mui/icons-material';
-import RoleForm from '../components/RoleForm';
-import { useDispatch, useSelector } from 'react-redux';
+import { Save, Cancel } from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { addRole, fetchRoles } from '../redux/roleReducer';
 
 const CreateRole = () => {
-  const navigate = useNavigate();
-  const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
-   const dispatch = useDispatch();
-
-  const { roles } = useSelector((state) => state.role);
-  
   const [formData, setFormData] = useState({
     name: '',
-    description: '',
-    color: '#2196f3',
-    permissions: []
+    description: ''
   });
+  const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const handleInputChange = (e) => {
+    // useEffect(() => {
+    //   // Fetch categories from backend when component mounts
+    //   dispatch(fetchRoles());
+    // }, [dispatch]);
+
+  const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
       [name]: value
     }));
-  };
-
-  const handlePermissionsChange = (e) => {
-    const { value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      permissions: typeof value === 'string' ? value.split(',') : value
-    }));
-  };
-
-  const handleSave =async() => {
-    if (!formData.name.trim() || !formData.description.trim()) {
-      showSnackbar('Please fill in all required fields', 'error');
-      return;
-    }
-
-    // Here you would typically save to your backend
-    console.log({formData:formData});
-    dispatch(addRole({name:formData.name, description:formData.description}))
-    dispatch(fetchRoles())
     
-    // // Navigate back after a short delay
-    // setTimeout(() => {
-    //   navigate('/roles');
-    // }, 1500);
+    // Clear error when user starts typing
+    if (errors[name]) {
+      setErrors(prev => ({
+        ...prev,
+        [name]: ''
+      }));
+    }
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+    
+    if (!formData.name.trim()) {
+      newErrors.name = 'Role name is required';
+    } else if (formData.name.trim().length < 2) {
+      newErrors.name = 'Role name must be at least 2 characters long';
+    }
+    
+    if (!formData.description.trim()) {
+      newErrors.description = 'Description is required';
+    } else if (formData.description.trim().length < 10) {
+      newErrors.description = 'Description must be at least 10 characters long';
+    }
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    if (!validateForm()) return;
+    
+    await dispatch(addRole({name:formData.name, description:formData.description}))
+    dispatch(fetchRoles());
+
+      
+      
+      
+      navigate('/roles');
+      setLoading(false);
+    
   };
 
   const handleCancel = () => {
     navigate('/roles');
   };
 
-  const showSnackbar = (message, severity) => {
-    setSnackbar({ open: true, message, severity });
-  };
-
-  const handleCloseSnackbar = () => {
-    setSnackbar(prev => ({ ...prev, open: false }));
-  };
-
   return (
-    <Container maxWidth="md" sx={{ py: 4 }}>
-      {/* Header */}
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 4 }}>
-        <Button
-          startIcon={<ArrowBackIcon />}
-          onClick={handleCancel}
-          color="inherit"
-        >
-          Back to Roles
-        </Button>
-        <SecurityIcon sx={{ fontSize: 32, color: 'primary.main' }} />
-        <Box>
-          <Typography variant="h4" component="h1" fontWeight="bold">
-            Create New Role
-          </Typography>
-          <Typography variant="subtitle1" color="text.secondary">
-            Add a new user role to the system
-          </Typography>
-        </Box>
-      </Box>
-
-      {/* Form */}
-      <Paper elevation={2} sx={{ mb: 3 }}>
-        <RoleForm 
-          formData={formData}
-          onInputChange={handleInputChange}
-          onPermissionsChange={handlePermissionsChange}
-          isEditing={false}
-        />
+    <Container maxWidth="md" sx={{ mt: 4, mb: 4 }}>
+      <Paper elevation={3} sx={{ p: 4 }}>
+        <Typography variant="h4" component="h1" gutterBottom>
+          Create New Role
+        </Typography>
         
-        {/* Actions */}
-        <Box sx={{ 
-          p: 3, 
-          borderTop: '1px solid', 
-          borderColor: 'divider',
-          display: 'flex',
-          justifyContent: 'flex-end',
-          gap: 2
-        }}>
-          <Button 
-            onClick={handleCancel}
-            color="inherit"
-            sx={{ px: 4 }}
-          >
-            Cancel
-          </Button>
-          <Button 
-            startIcon={<SaveIcon />} 
-            onClick={handleSave}
-            variant="contained"
-            sx={{ px: 4 }}
-          >
-            Create Role
-          </Button>
+        {error && (
+          <Alert severity="error" sx={{ mb: 3 }} onClose={() => setError('')}>
+            {error}
+          </Alert>
+        )}
+        
+        <Box component="form" onSubmit={handleSubmit} noValidate>
+          <TextField
+            fullWidth
+            label="Role Name"
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+            error={!!errors.name}
+            helperText={errors.name}
+            margin="normal"
+            required
+            disabled={loading}
+          />
+          
+          <TextField
+            fullWidth
+            label="Description"
+            name="description"
+            value={formData.description}
+            onChange={handleChange}
+            error={!!errors.description}
+            helperText={errors.description}
+            margin="normal"
+            multiline
+            rows={4}
+            required
+            disabled={loading}
+          />
+          
+          <Box sx={{ mt: 3, display: 'flex', gap: 2, justifyContent: 'flex-end' }}>
+            <Button
+              variant="outlined"
+              startIcon={<Cancel />}
+              onClick={handleCancel}
+              disabled={loading}
+            >
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              variant="contained"
+              startIcon={loading ? <CircularProgress size={20} /> : <Save />}
+              disabled={loading}
+            >
+              {loading ? 'Creating...' : 'Create Role'}
+            </Button>
+          </Box>
         </Box>
       </Paper>
-
-      {/* Snackbar */}
-      <Snackbar 
-        open={snackbar.open} 
-        autoHideDuration={4000} 
-        onClose={handleCloseSnackbar}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-      >
-        <Alert 
-          onClose={handleCloseSnackbar} 
-          severity={snackbar.severity} 
-          sx={{ width: '100%' }}
-        >
-          {snackbar.message}
-        </Alert>
-      </Snackbar>
     </Container>
   );
 };

@@ -1,104 +1,163 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
-  Grid,
+  Container,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Button,
+  IconButton,
+  Typography,
+  Box,
+  Alert,
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
-  Button,
-  Typography,
-  Box,
-  Alert
+  CircularProgress,
 } from '@mui/material';
-import RoleCard from '../components/RoleCard';
+import { Edit, Delete, Add } from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteRole, fetchRoles } from '../redux/roleReducer';
 
-const RoleList = ({ roles, onEdit, onDelete }) => {
-  const [deleteConfirm, setDeleteConfirm] = useState(null);
-     const dispatch = useDispatch();
+const RolesList = () => {
+  const {roles} = useSelector((state) => state.role)
+  console.log({roles:roles});
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const [deleteDialog, setDeleteDialog] = useState({ open: false, role: null });
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  //  const { roles:rles } = useSelector((state) => state.role);
-  // console.log(rles);
+    useEffect(() => {
+      // Fetch categories from backend when component mounts
+      dispatch(fetchRoles());
+    }, [dispatch]);
+  
 
-  const handleDeleteConfirm = async(roleId) => {
-    // setDeleteConfirm(roleId);
-          await dispatch(deleteRole(roleId))
-          dispatch(dispatch(fetchRoles()))
 
+
+
+  const handleDelete = async () => {
+    await dispatch(deleteRole({id:deleteDialog.role._id}))
+    dispatch(fetchRoles())
+      
+      
+      setDeleteDialog({ open: false, role: null });
+    
   };
 
-  const handleDelete = () => {
-    if (deleteConfirm) {
-      onDelete(deleteConfirm);
-      setDeleteConfirm(null);
-    }
+  const openDeleteDialog = (role) => {
+    setDeleteDialog({ open: true, role });
   };
 
-  // Safe check for roles
-  if (!roles || !Array.isArray(roles)) {
-    return (
-      <Box sx={{ p: 3, textAlign: 'center' }}>
-        <Alert severity="info">
-          No roles available or roles data is invalid.
-        </Alert>
-      </Box>
-    );
-  }
+  const closeDeleteDialog = () => {
+    setDeleteDialog({ open: false, role: null });
+  };
 
-  if (roles.length === 0) {
-    return (
-      <Box sx={{ p: 3, textAlign: 'center' }}>
-        <Alert severity="info">
-          No roles found. Create your first role to get started.
-        </Alert>
-      </Box>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <Box display="flex" justifyContent="center" alignItems="center" minHeight="400px">
+  //       <CircularProgress />
+  //     </Box>
+  //   );
+  // }
 
   return (
-    <>
-      <Grid container spacing={3}>
-        {roles.map((role) => (
-          <Grid item xs={12} sm={6} md={4} key={role._id}>
-            <RoleCard 
-              role={role} 
-              onEdit={() => onEdit(role._id)}
-              onDelete={() => handleDeleteConfirm(role._id)}
-            />
-          </Grid>
-        ))}
-      </Grid>
+    <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+      <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
+        <Typography variant="h4" component="h1">
+          Roles Management
+        </Typography>
+        <Button
+          variant="contained"
+          startIcon={<Add />}
+          onClick={() => navigate('/roles/create')}
+        >
+          Add New Role
+        </Button>
+      </Box>
+
+      {error && (
+        <Alert severity="error" sx={{ mb: 2 }} onClose={() => setError('')}>
+          {error}
+        </Alert>
+      )}
+
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Role Name</TableCell>
+              <TableCell>Description</TableCell>
+              <TableCell>Actions</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {roles.map((role) => (
+              <TableRow key={role._id}>
+                <TableCell>
+                  <Typography variant="subtitle1" fontWeight="medium">
+                    {role.name}
+                  </Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography variant="body2" color="textSecondary">
+                    {role.description}
+                  </Typography>
+                </TableCell>
+                <TableCell>
+                  <IconButton
+                    color="primary"
+                    onClick={() => navigate(`/roles/edit/${role._id}`)}
+                    sx={{ mr: 1 }}
+                  >
+                    <Edit />
+                  </IconButton>
+                  <IconButton
+                    color="error"
+                    onClick={() => openDeleteDialog(role)}
+                  >
+                    <Delete />
+                  </IconButton>
+                </TableCell>
+              </TableRow>
+            ))}
+            {roles.length === 0 && (
+              <TableRow>
+                <TableCell colSpan={3} align="center">
+                  <Typography variant="body1" color="textSecondary">
+                    No roles found
+                  </Typography>
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </TableContainer>
 
       {/* Delete Confirmation Dialog */}
-      <Dialog open={!!deleteConfirm} onClose={() => setDeleteConfirm(null)} maxWidth="xs" fullWidth>
-        <DialogTitle sx={{ py: 2, px: 3 }}>
-          Confirm Delete
-        </DialogTitle>
-        <DialogContent sx={{ p: 3 }}>
+      <Dialog open={deleteDialog.open} onClose={closeDeleteDialog}>
+        <DialogTitle>Confirm Delete</DialogTitle>
+        <DialogContent>
           <Typography>
-            Are you sure you want to delete this role? This action cannot be undone.
+            Are you sure you want to delete the role "{deleteDialog.role?.name}"? 
+            This action cannot be undone.
           </Typography>
         </DialogContent>
-        <DialogActions sx={{ p: 3, borderTop: '1px solid', borderColor: 'divider' }}>
-          <Button 
-            onClick={() => setDeleteConfirm(null)}
-            sx={{ px: 3 }}
-          >
-            Cancel
-          </Button>
-          <Button 
-            onClick={handleDelete} 
-            color="error" 
-            variant="contained"
-            sx={{ px: 3 }}
-          >
+        <DialogActions>
+          <Button onClick={closeDeleteDialog}>Cancel</Button>
+          <Button onClick={handleDelete} color="error" variant="contained">
             Delete
           </Button>
         </DialogActions>
       </Dialog>
-    </>
+    </Container>
   );
 };
 
-export default RoleList;
+export default RolesList;
