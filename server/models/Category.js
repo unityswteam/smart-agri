@@ -16,6 +16,9 @@ const CategorySchema = new mongoose.Schema(
       maxlength: [500, 'Category description must be at most 500 characters'],
       default: '',
     },
+    color:{
+      type: String,
+    }
   },
   { timestamps: true }
 );

@@ -6,9 +6,9 @@ import http from 'http';
 import connectDB from './config/db.js';
 import mongoose from 'mongoose';
 
-import categoryRoutes from './routes/categoryRoutes.js';
-import userRoutes from './routes/userRoutes.js';
-import roleRoutes from './routes/roleRoutes.js';
+import categoryRoutes from './routes/category-routes.js';
+import userRoutes from './routes/user-routes.js';
+import roleRoutes from './routes/role-routes.js';
 dotenv.config();
 
 const app = express();
