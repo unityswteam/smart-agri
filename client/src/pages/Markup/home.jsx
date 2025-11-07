@@ -10,6 +10,7 @@ import CounterOne from '../../components/Markup/CounterOne'
 import ProjectOne from '../../components/Markup/CallAndProjectOne'
 import ContactOne from '../../components/Markup/ContactOne'
 import BlogOne from '../../components/Markup/BlogOne'
+import CtaOne from '../../components/Markup/CtaBg'
 
 
 
@@ -28,6 +29,7 @@ function home() {
     <ProjectOne />
     <ContactOne />
     <BlogOne />
+    <CtaOne />
 
 
 
