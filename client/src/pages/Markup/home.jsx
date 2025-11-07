@@ -9,6 +9,7 @@ import TestimonialOne from '../../components/Markup/TestimonialOne'
 import CounterOne from '../../components/Markup/CounterOne'
 import ProjectOne from '../../components/Markup/CallAndProjectOne'
 import ContactOne from '../../components/Markup/ContactOne'
+import BlogOne from '../../components/Markup/BlogOne'
 
 
 
@@ -26,6 +27,8 @@ function home() {
     <CounterOne />
     <ProjectOne />
     <ContactOne />
+    <BlogOne />
+
 
 
     </div>
