@@ -8,6 +8,7 @@ import HealthyFoodSection from '../../components/Markup/HealthyFoodSection'
 import TestimonialOne from '../../components/Markup/TestimonialOne'
 import CounterOne from '../../components/Markup/CounterOne'
 import ProjectOne from '../../components/Markup/CallAndProjectOne'
+import ContactOne from '../../components/Markup/ContactOne'
 
 
 
@@ -24,6 +25,7 @@ function home() {
     <TestimonialOne />
     <CounterOne />
     <ProjectOne />
+    <ContactOne />
 
 
     </div>
