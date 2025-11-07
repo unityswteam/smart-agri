@@ -1,5 +1,6 @@
 import React from 'react'
 import Mainbanner from '../../components/Markup/Mainbanner'
+import AboutOne from '../../components/Markup/AboutOne'
 
 
 function home() {
@@ -7,6 +8,7 @@ function home() {
     <div>
 
     <Mainbanner />
+    <AboutOne />
 
     </div>
   )
