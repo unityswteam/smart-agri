@@ -1,11 +1,12 @@
 import React from 'react'
+import Mainbanner from '../../components/Markup/Mainbanner'
 
 
 function home() {
   return (
     <div>
 
-    <p>Home page...</p>
+    <Mainbanner />
 
     </div>
   )
