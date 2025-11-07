@@ -5,6 +5,7 @@ import ServicesOne from '../../components/Markup/ServiceOne'
 import BrandOne from '../../components/Markup/BrandOne'
 import UnbeatableOne from '../../components/Markup/UnbeatableOne'
 import HealthyFoodSection from '../../components/Markup/HealthyFoodSection'
+import TestimonialOne from '../../components/Markup/TestimonialOne'
 
 
 
@@ -18,6 +19,7 @@ function home() {
     <BrandOne />
     <UnbeatableOne />
     <HealthyFoodSection />
+    <TestimonialOne />
 
 
     </div>
