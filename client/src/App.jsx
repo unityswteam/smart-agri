@@ -11,6 +11,7 @@ import CategoryList from './components/categories/Categories'
 import Header from "./components/Markup/home/Header";
 import Footer from "./components/Markup/home/Footer";
 import Home from './pages/home'
+import RegisterForm from "./components/auth/RegisterForm";
 
 
 
@@ -52,6 +53,7 @@ function App() {
         <Header/>
         <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/register" element={<RegisterForm />} />
         <Route path="/roles" element={<RoleList />} />
         <Route path="/roles/create" element={<CreateRole />} />
         <Route path="/roles/edit/:id" element={<EditRole />} />

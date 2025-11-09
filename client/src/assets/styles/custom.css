@@ -1,0 +1,454 @@
+
+/* src/index.css or any global CSS file */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden; /* THIS IS KEY */
+}
+
+#root,
+.App {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/* Force all containers to stay inside viewport */
+.main-header,
+.main-header__wrapper,
+.main-header__wrapper-inner,
+.login-popup,
+.stricky-header {
+  max-width: 100vw;
+  overflow: hidden;
+}
+
+/* Optional: Prevent large images/text from breaking layout */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* ============================================= */
+/*       MODERN LOGIN FORM – BASED ON PHOTO      */
+/* ============================================= */
+/* ============================================= */
+/*       MODERN LOGIN FORM – BASED ON PHOTO      */
+/* ============================================= */
+
+/* Popup Background */
+.popup-content{
+  position: absolute;
+  background: #fff;
+  top: auto;
+  right: 0;
+  padding: 30px;
+  border-radius: 10px;
+  max-width: 400px;
+  width: 90%;
+  background-color: #5a8f0f;
+}
+
+.login-popup {
+  position: relative;
+  top: 10px;
+  right: 0;
+  margin-top: 15px;
+  background: #fff;
+  width: 360px;
+  max-width: 90vw;
+  padding: 30px 30px 35px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  z-index: 9999;
+  font-family: 'Poppins', sans-serif;
+  text-align: center;
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Title */
+.login-popup h4 {
+  font-size: 24px;
+  font-weight: 600;
+  color: #2c3e50;
+  margin: 0 0 28px;
+  letter-spacing: 0.5px;
+}
+
+/* Input Wrapper */
+.contact-container {
+  position: relative;
+  margin-bottom: 22px;
+  text-align: left;
+}
+
+.contact-container input {
+  width: 100%;
+  padding: 14px 45px 14px 15px;
+  font-size: 15px;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 8px;
+  background: #fdfdfd;
+  outline: none;
+  transition: all 0.3s ease;
+  color: #2c3e50;
+}
+
+.contact-container input:focus {
+  border-color: #77bb17;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(119, 187, 23, 0.15);
+}
+
+/* Floating Label Effect */
+.contact-container label {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 15px;
+  color: #aaa;
+  pointer-events: none;
+  transition: all 0.3s ease;
+  background: #fff;
+  padding: 0 5px;
+}
+
+.contact-container input:focus ~ label,
+.contact-container input:not(:placeholder-shown) ~ label {
+  top: 0;
+  font-size: 12px;
+  color: #77bb17;
+  font-weight: 500;
+}
+
+/* Icon Inside Input */
+.contact-container i {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 16px;
+  color: #777;
+  pointer-events: none;
+}
+
+.contact-container input:focus ~ i {
+  color: #77bb17;
+}
+
+/* Checkbox + Links Row */
+.mb-15 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 18px 0 30px;
+  font-size: 13.5px;
+}
+
+.mb-15 label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #666;
+  cursor: pointer;
+  font-weight: 400;
+}
+
+.mb-15 input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: #77bb17;
+}
+
+.mb-15 .popup-light p {
+  margin: 0;
+  color: #77bb17;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.mb-15 .popup-light p:hover {
+  color: #5a8f0f;
+}
+
+/* LOGIN Button */
+.krishok-btn {
+  width: 100%;
+  padding: 14px;
+  background: #77bb17;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+}
+
+.krishok-btn:hover {
+  background: #5a8f0f;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 15px rgba(119, 187, 23, 0.3);
+}
+
+.krishok-btn:active {
+  transform: translateY(0);
+}
+
+/* Close Button */
+.popup-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #f1f1f1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 14px;
+  color: #999;
+  transition: all 0.3s ease;
+}
+
+.popup-close:hover {
+  background: #e0e0e0;
+  color: #555;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .login-popup {
+    width: 300px;
+    padding: 25px 20px;
+  }
+  .login-popup h4 {
+    font-size: 22px;
+  }
+}
+
+
+/* ============================================= */
+/*       REGISTRATION FORM – 
+/* ============================================= */
+
+/* Reuse the same popup container (login-popup) – just a different class */
+.registration-form {
+  position: relative;
+  top: 10px;
+  right: 0;
+  margin: auto;
+  background: #fff;
+  max-width: 90vw;
+  padding: 30px 30px 35px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  z-index: 9999;
+  font-family: 'Poppins', sans-serif;
+  text-align: center;
+  animation: slideDown 0.3s ease-out;
+}
+
+/* Title – slightly larger for “Create Account” */
+.registration-form h4 {
+  font-size: 26px;               /* a bit bigger than login */
+  font-weight: 600;
+  color: #2c3e50;
+  margin: 0 0 28px;
+  letter-spacing: 0.5px;
+}
+
+/* ---- Input fields (reuse .contact-container) ---- */
+.registration-form .contact-container {
+  position: relative;
+  margin-bottom: 22px;
+  text-align: left;
+}
+
+/* Username & Email – same as login */
+.registration-form .contact-container input[type="text"],
+.registration-form .contact-container input[type="email"],
+.registration-form .contact-container input[type="password"] {
+  width: 100%;
+  padding: 14px 45px 14px 15px;
+  font-size: 15px;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 8px;
+  background: #fdfdfd;
+  outline: none;
+  transition: all 0.3s ease;
+  color: #2c3e50;
+}
+
+/* Focus state */
+.registration-form .contact-container input:focus {
+  border-color: #77bb17;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(119, 187, 23, 0.15);
+}
+
+/* Floating label */
+.reg-label {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 15px;
+  color: #aaa;
+  pointer-events: none;
+  transition: all 0.3s ease;
+  background: #fff;
+  padding: 0 5px;
+}
+
+/* Move label up when focused or filled */
+.registration-form .contact-container input:focus ~ .reg-label,
+.registration-form .contact-container input:not(:placeholder-shown) ~ .reg-label {
+  top: 0;
+  font-size: 12px;
+  color: #77bb17;
+  font-weight: 500;
+}
+
+/* Icons inside inputs */
+.registration-form .contact-container i {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 16px;
+  color: #777;
+  pointer-events: none;
+}
+.registration-form .contact-container input:focus ~ i {
+  color: #77bb17;
+}
+
+/* ---- Retype Password (no icon) ---- */
+.registration-form .mb-15 input[type="password"] {
+  width: 100%;
+  padding: 14px 15px;
+  font-size: 15px;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 8px;
+  background: #fdfdfd;
+  outline: none;
+  transition: all 0.3s ease;
+}
+.registration-form .mb-15 input[type="password"]:focus {
+  border-color: #77bb17;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(119, 187, 23, 0.15);
+}
+
+/* ---- Terms checkbox ---- */
+.registration-form .text-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+  font-size: 13.5px;
+  color: #666;
+}
+.registration-form .text-left input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: #77bb17;
+}
+.registration-form .text-left label {
+  cursor: pointer;
+}
+.registration-form .text-left label span {
+  color: #77bb17;
+  font-weight: 500;
+}
+
+/* ---- Create Account button ---- */
+.registration-form .krishok-btn {
+  width: 100%;
+  padding: 14px;
+  background: #77bb17;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+}
+.registration-form .krishok-btn:hover {
+  background: #5a8f0f;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 15px rgba(119, 187, 23, 0.3);
+}
+.registration-form .krishok-btn:active {
+  transform: translateY(0);
+}
+
+/* ---- “Login Now” link ---- */
+.registration-form p {
+  margin: 0;
+  font-size: 14px;
+  color: #666;
+}
+.registration-form p .login-form-show {
+  color: #72b300;
+  font-weight: 500;
+  text-decoration: underline;
+}
+.registration-form p .login-form-show:hover {
+  color: #5a8f0f;
+}
+
+/* ---- Close button (re-use login’s style) ---- */
+.registration-form .popup-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #f1f1f1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 14px;
+  color: #999;
+  transition: all 0.3s ease;
+}
+.registration-form .popup-close:hover {
+  background: #e0e0e0;
+  color: #555;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 480px) {
+  .registration-form {
+    width: 300px;
+    padding: 25px 20px;
+  }
+  .registration-form h4 {
+    font-size: 23px;
+  }
+}
