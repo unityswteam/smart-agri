@@ -2,11 +2,11 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 // Import Images
-import UnbeatableBg from "../../assets/template_assets/images/backgrounds/unbeatable-one-bg.jpg";
-import Shape1 from "../../assets/template_assets/images/shapes/unbeatable-shape-1.png";
-import Shape2 from "../../assets/template_assets/images/shapes/unbeatable-shape-2.png";
+import UnbeatableBg from "../../../assets/template_assets/images/backgrounds/unbeatable-one-bg.jpg";
+import Shape1 from "../../../assets/template_assets/images/shapes/unbeatable-shape-1.png";
+import Shape2 from "../../../assets/template_assets/images/shapes/unbeatable-shape-2.png";
 
-const UnbeatableOne = () => {
+const Unbeatable = () => {
   return (
     <>
       {/* Unbeatable One Section - Pure CSS Parallax */}
@@ -85,4 +85,4 @@ const UnbeatableOne = () => {
   );
 };
 
-export default UnbeatableOne;
+export default Unbeatable;

@@ -2,15 +2,15 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 // Import Images
-import BgShape from '../../assets/template_assets/images/shapes/project-one-shape-1.png';
-import SectionIcon from '../../assets/template_assets/images/icon/section-title-icon-1.png';
+import BgShape from '../../../assets/template_assets/images/shapes/project-one-shape-1.png';
+import SectionIcon from '../../../assets/template_assets/images/icon/section-title-icon-1.png';
 
-import Project1 from '../../assets/template_assets/images/project/project-one-1.jpg';
-import Project2 from '../../assets/template_assets/images/project/project-one-2.jpg';
-import Project3 from '../../assets/template_assets/images/project/project-one-3.jpg';
-import Project4 from '../../assets/template_assets/images/project/project-one-4.jpg';
+import Project1 from '../../../assets/template_assets/images/project/project-one-1.jpg';
+import Project2 from '../../../assets/template_assets/images/project/project-one-2.jpg';
+import Project3 from '../../../assets/template_assets/images/project/project-one-3.jpg';
+import Project4 from '../../../assets/template_assets/images/project/project-one-4.jpg';
 
-const CallAndProjectOne = () => {
+const CallAndProject = () => {
   const projects = [
     { img: Project1, tag: 'healthy', title: ['organic', 'solutions'], delay: '100ms' },
     { img: Project2, tag: 'farming', title: ['Harvest', 'Innovations'], delay: '200ms' },
@@ -93,4 +93,4 @@ const CallAndProjectOne = () => {
   );
 };
 
-export default CallAndProjectOne;
+export default CallAndProject;

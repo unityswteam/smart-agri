@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Container,
   Paper,
@@ -10,25 +10,40 @@ import {
   CircularProgress,
 } from '@mui/material';
 import { Save, Cancel } from '@mui/icons-material';
-import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { addRole, fetchRoles } from '../redux/roleReducer';
+import { useNavigate, useParams } from 'react-router-dom';
+import { fetchRoles, getRoleById, updateRole } from '../../redux/roleReducer';
+import { useDispatch, useSelector } from 'react-redux';
 
-const CreateRole = () => {
+const EditRole = () => {
   const [formData, setFormData] = useState({
     name: '',
     description: ''
   });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
+  const [fetchLoading, setFetchLoading] = useState(true);
   const [error, setError] = useState('');
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const { id } = useParams();
+  console.log({id:id});
+  const dispatch = useDispatch();    
+  const {roles, currentRole} = useSelector((state) => state.role)
+  console.log({currentRole:currentRole});
 
-    // useEffect(() => {
-    //   // Fetch categories from backend when component mounts
-    //   dispatch(fetchRoles());
-    // }, [dispatch]);
+  useEffect(() => {
+    dispatch(getRoleById({id}))
+  }, [id, dispatch]);
+
+  // Populate form with currentRole data when it's available
+  useEffect(() => {
+    if (currentRole && currentRole._id === id) {
+      setFormData({
+        name: currentRole.name || '',
+        description: currentRole.description || ''
+      });
+      setFetchLoading(false);
+    }
+  }, [currentRole, id]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -70,26 +85,35 @@ const CreateRole = () => {
     
     if (!validateForm()) return;
     
-    await dispatch(addRole({name:formData.name, description:formData.description}))
-    dispatch(fetchRoles());
-
-      
-      
-      
+    setLoading(true);
+    try {
+      await dispatch(updateRole({id, name:formData.name, description:formData.description}))
+      dispatch(fetchRoles())
       navigate('/roles');
+    } catch (err) {
+      setError('Failed to update role');
+    } finally {
       setLoading(false);
-    
+    }
   };
 
   const handleCancel = () => {
     navigate('/roles');
   };
 
+  // if (fetchLoading) {
+  //   return (
+  //     <Box display="flex" justifyContent="center" alignItems="center" minHeight="400px">
+  //       <CircularProgress />
+  //     </Box>
+  //   );
+  // }
+
   return (
     <Container maxWidth="md" sx={{ mt: 4, mb: 4 }}>
       <Paper elevation={3} sx={{ p: 4 }}>
         <Typography variant="h4" component="h1" gutterBottom>
-          Create New Role
+          Edit Role
         </Typography>
         
         {error && (
@@ -110,6 +134,7 @@ const CreateRole = () => {
             margin="normal"
             required
             disabled={loading}
+            placeholder={currentRole?.name || ''}
           />
           
           <TextField
@@ -125,6 +150,7 @@ const CreateRole = () => {
             rows={4}
             required
             disabled={loading}
+            placeholder={currentRole?.description || ''}
           />
           
           <Box sx={{ mt: 3, display: 'flex', gap: 2, justifyContent: 'flex-end' }}>
@@ -142,7 +168,7 @@ const CreateRole = () => {
               startIcon={loading ? <CircularProgress size={20} /> : <Save />}
               disabled={loading}
             >
-              {loading ? 'Creating...' : 'Create Role'}
+              {loading ? 'Updating...' : 'Update Role'}
             </Button>
           </Box>
         </Box>
@@ -151,4 +177,4 @@ const CreateRole = () => {
   );
 };
 
-export default CreateRole;
+export default EditRole;

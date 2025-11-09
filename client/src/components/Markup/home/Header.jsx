@@ -1,5 +1,5 @@
 import React from 'react'
-import logo from '../../assets/template_assets/images/resources/logo-1.png'
+import logo from '../../../assets/template_assets/images/resources/logo-1.png'
 
 function Header() {
   return (
@@ -123,7 +123,6 @@ function Header() {
 
         <div className="stricky-header stricked-menu main-menu">
             <div className="sticky-header__content"></div>
-           
         </div>
     
     </>

@@ -7,17 +7,17 @@ import 'swiper/css';
 import 'swiper/css/autoplay';
 
 // Images
-import BgImage from '../../assets/template_assets/images/backgrounds/testimonial-one-bg.png';
-import SectionIcon from '../../assets/template_assets/images/icon/section-title-icon-1.png';
+import BgImage from '../../../assets/template_assets/images/backgrounds/testimonial-one-bg.png';
+import SectionIcon from '../../../assets/template_assets/images/icon/section-title-icon-1.png';
 
-import Testimonial1 from '../../assets/template_assets/images/testimonial/testimonial-1-1.jpg';
-import Testimonial2 from '../../assets/template_assets/images/testimonial/testimonial-1-2.jpg';
-import Testimonial3 from '../../assets/template_assets/images/testimonial/testimonial-1-3.jpg';
-import Testimonial4 from '../../assets/template_assets/images/testimonial/testimonial-1-4.jpg';
-import Testimonial5 from '../../assets/template_assets/images/testimonial/testimonial-1-5.jpg';
-import Testimonial6 from '../../assets/template_assets/images/testimonial/testimonial-1-6.jpg';
+import Testimonial1 from '../../../assets/template_assets/images/testimonial/testimonial-1-1.jpg';
+import Testimonial2 from '../../../assets/template_assets/images/testimonial/testimonial-1-2.jpg';
+import Testimonial3 from '../../../assets/template_assets/images/testimonial/testimonial-1-3.jpg';
+import Testimonial4 from '../../../assets/template_assets/images/testimonial/testimonial-1-4.jpg';
+import Testimonial5 from '../../../assets/template_assets/images/testimonial/testimonial-1-5.jpg';
+import Testimonial6 from '../../../assets/template_assets/images/testimonial/testimonial-1-6.jpg';
 
-const TestimonialOne = () => {
+const Testimonial = () => {
   const testimonials = [
     { img: Testimonial1, name: 'Sarah Albert', role: 'Customer' },
     { img: Testimonial2, name: 'Kevin Martin', role: 'Customer' },
@@ -95,4 +95,4 @@ const TestimonialOne = () => {
   );
 };
 
-export default TestimonialOne;
+export default Testimonial;

@@ -28,7 +28,7 @@ import {
   Cancel as CancelIcon,
 } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
-import { addCategory, deleteCategory, fetchCategories, updateCategory } from "../redux/categoryReducer";
+import { addCategory, deleteCategory, fetchCategories, updateCategory } from "../../redux/categoryReducer";
 
 const CategoriesManagement = () => {
   const dispatch = useDispatch();

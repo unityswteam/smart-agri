@@ -22,7 +22,7 @@ import {
 import { Edit, Delete, Add } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteRole, fetchRoles } from '../redux/roleReducer';
+import { deleteRole, fetchRoles } from '../../redux/roleReducer';
 
 const RolesList = () => {
   const {roles} = useSelector((state) => state.role)

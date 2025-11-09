@@ -7,13 +7,13 @@ import 'swiper/css';
 import 'swiper/css/autoplay';
 
 // Import Brand Logos
-import Brand1 from '../../assets/template_assets/images/brand/brand-1-1.png';
-import Brand2 from '../../assets/template_assets/images/brand/brand-1-2.png';
-import Brand3 from '../../assets/template_assets/images/brand/brand-1-3.png';
-import Brand4 from '../../assets/template_assets/images/brand/brand-1-4.png';
-import Brand5 from '../../assets/template_assets/images/brand/brand-1-5.png';
+import Brand1 from '../../../assets/template_assets/images/brand/brand-1-1.png';
+import Brand2 from '../../../assets/template_assets/images/brand/brand-1-2.png';
+import Brand3 from '../../../assets/template_assets/images/brand/brand-1-3.png';
+import Brand4 from '../../../assets/template_assets/images/brand/brand-1-4.png';
+import Brand5 from '../../../assets/template_assets/images/brand/brand-1-5.png';
 
-const BrandOne = () => {
+const Brand = () => {
   const brands = [
     { src: Brand1, name: 'Brand One' },
     { src: Brand2, name: 'Brand Two' },
@@ -69,4 +69,4 @@ const BrandOne = () => {
   );
 };
 
-export default BrandOne;
+export default Brand;

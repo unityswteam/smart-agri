@@ -2,14 +2,14 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 // Import Images
-import ServicesBg from "../../assets/template_assets/images/shapes/services-one-shape-1.png";
-import SectionTitleIcon from "../../assets/template_assets/images/icon/section-title-icon-1.png";
-import Service1 from "../../assets/template_assets/images/services/services-one-1.jpg";
-import Service2 from "../../assets/template_assets/images/services/services-one-2.jpg";
-import Service3 from "../../assets/template_assets/images/services/services-one-3.jpg";
-import Service4 from "../../assets/template_assets/images/services/services-one-4.jpg";
+import ServicesBg from "../../../assets/template_assets/images/shapes/services-one-shape-1.png";
+import SectionTitleIcon from "../../../assets/template_assets/images/icon/section-title-icon-1.png";
+import Service1 from "../../../assets/template_assets/images/services/services-one-1.jpg";
+import Service2 from "../../../assets/template_assets/images/services/services-one-2.jpg";
+import Service3 from "../../../assets/template_assets/images/services/services-one-3.jpg";
+import Service4 from "../../../assets/template_assets/images/services/services-one-4.jpg";
 
-const ServicesOne = () => {
+const Services = () => {
   return (
     <>
       {/* Services One Start */}
@@ -134,4 +134,4 @@ const ServicesOne = () => {
   );
 };
 
-export default ServicesOne;
+export default Services;

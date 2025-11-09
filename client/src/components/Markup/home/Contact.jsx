@@ -2,10 +2,10 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 // Import Images
-import SectionIcon from '../../assets/template_assets/images/icon/section-title-icon-1.png';
-import BgShape from '../../assets/template_assets/images/shapes/counter-one-shape-1.png';
+import SectionIcon from '../../../assets/template_assets/images/icon/section-title-icon-1.png';
+import BgShape from '../../../assets/template_assets/images/shapes/counter-one-shape-1.png';
 
-const ContactOne = () => {
+const Contact = () => {
   return (
     <section className="contact-one">
       <div className="container">
@@ -111,4 +111,4 @@ const ContactOne = () => {
   );
 };
 
-export default ContactOne;
+export default Contact;

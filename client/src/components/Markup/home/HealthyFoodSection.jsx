@@ -2,9 +2,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 // Import Images
-import BgShape from '../../assets/template_assets/images/resources/healthy-food-one-1.jpg';
-import MainImg from '../../assets/template_assets/images/resources/healthy-food-one-1.jpg';
-import SectionIcon from '../../assets/template_assets/images/icon/section-title-icon-1.png';
+import BgShape from '../../../assets/template_assets/images/resources/healthy-food-one-1.jpg';
+import MainImg from '../../../assets/template_assets/images/resources/healthy-food-one-1.jpg';
+import SectionIcon from '../../../assets/template_assets/images/icon/section-title-icon-1.png';
 
 const HealthyFoodSection = () => {
   return (

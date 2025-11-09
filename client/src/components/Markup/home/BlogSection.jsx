@@ -2,12 +2,12 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 // Import Images
-import SectionIcon from '../../assets/template_assets/images/icon/section-title-icon-1.png';
-import Blog1 from '../../assets/template_assets/images/blog/blog-one-1.jpg';
-import Blog2 from '../../assets/template_assets/images/blog/blog-one-2.jpg';
-import Blog3 from '../../assets/template_assets/images/blog/blog-one-3.jpg';
+import SectionIcon from '../../../assets/template_assets/images/icon/section-title-icon-1.png';
+import Blog1 from '../../../assets/template_assets/images/blog/blog-one-1.jpg';
+import Blog2 from '../../../assets/template_assets/images/blog/blog-one-2.jpg';
+import Blog3 from '../../../assets/template_assets/images/blog/blog-one-3.jpg';
 
-const BlogOne = () => {
+const Blog = () => {
   const blogs = [
     {
       img: Blog1,
@@ -88,4 +88,4 @@ const BlogOne = () => {
   );
 };
 
-export default BlogOne;
+export default Blog;

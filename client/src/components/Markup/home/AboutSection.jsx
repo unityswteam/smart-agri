@@ -2,13 +2,13 @@
 import { Link } from 'react-router-dom';
 
 // Import Images
-import AboutShape1 from "../../assets/template_assets/images/shapes/about-one-shape-1.png";
-import SectionTitleIcon from "../../assets/template_assets/images/icon/section-title-icon-1.png";
-import AboutImg1 from "../../assets/template_assets/images/resources/about-one-img-1.jpg";
-import AboutImg2 from "../../assets/template_assets/images/resources/about-one-img-2.jpg";
-import CeoImg from "../../assets/template_assets/images/resources/about-one-ceo-img.jpg";
+import AboutShape1 from "../../../assets/template_assets/images/shapes/about-one-shape-1.png";
+import SectionTitleIcon from "../../../assets/template_assets/images/icon/section-title-icon-1.png";
+import AboutImg1 from "../../../assets/template_assets/images/resources/about-one-img-1.jpg";
+import AboutImg2 from "../../../assets/template_assets/images/resources/about-one-img-2.jpg";
+import CeoImg from "../../../assets/template_assets/images/resources/about-one-ceo-img.jpg";
 
-const AboutOne = () => {
+const AboutSection = () => {
   return (
     <>
       {/* About One Start */}
@@ -120,4 +120,4 @@ const AboutOne = () => {
   );
 };
 
-export default AboutOne;
+export default AboutSection;

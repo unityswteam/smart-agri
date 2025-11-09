@@ -1,16 +1,16 @@
 
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import CreateRole from "./pages/createRole";
-import EditRole from "./pages/EditRole";
-import RoleList from "./pages/RoleList";
+import CreateRole from "./components/roles/createRole";
+import EditRole from "./components/roles/EditRole";
+import RoleList from "./components/roles/RoleList";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { fetchRoles } from "./redux/roleReducer";
-import CategoryList from './pages/Categories'
+import CategoryList from './components/categories/Categories'
 
-import Header from "./components/Markup/Header";
-import Footer from "./components/Markup/Footer";
-import Home from './pages/Markup/home'
+import Header from "./components/Markup/home/Header";
+import Footer from "./components/Markup/home/Footer";
+import Home from './pages/home'
 
 
 
@@ -48,7 +48,7 @@ function App() {
   }, [dispatch]);
 
   return (
-    <BrowserRouter>
+    <BrowserRouter className="page-wrapper">
         <Header/>
         <Routes>
         <Route path="/" element={<Home />} />

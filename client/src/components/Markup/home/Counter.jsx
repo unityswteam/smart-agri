@@ -1,11 +1,11 @@
 import React from 'react';
 
 // Import Images
-import BgShape from '../../assets/template_assets/images/shapes/counter-one-shape-3.png';
-import Shape1 from '../../assets/template_assets/images/shapes/counter-one-shape-1.png';
-import Shape2 from '../../assets/template_assets/images/shapes/counter-one-shape-2.png';
+import BgShape from '../../../assets/template_assets/images/shapes/counter-one-shape-3.png';
+import Shape1 from '../../../assets/template_assets/images/shapes/counter-one-shape-1.png';
+import Shape2 from '../../../assets/template_assets/images/shapes/counter-one-shape-2.png';
 
-const CounterOne = () => {
+const Counter = () => {
   return (
     <section className="counter-one">
       {/* Background Shape */}
@@ -105,4 +105,4 @@ const CounterOne = () => {
   );
 };
 
-export default CounterOne;
+export default Counter;

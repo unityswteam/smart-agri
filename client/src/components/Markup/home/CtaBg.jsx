@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 // Import Background Image
-import CtaBg from '../../assets/template_assets/images/backgrounds/cta-one-bg.jpg';
+import CtaBg from '../../../assets/template_assets/images/backgrounds/cta-one-bg.jpg';
 
 const CtaOne = () => {
   return (

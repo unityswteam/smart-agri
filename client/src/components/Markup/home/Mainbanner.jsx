@@ -9,9 +9,9 @@ import 'swiper/css/pagination';
 import 'swiper/css/effect-fade';
 
 // Images
-import MainSlider1 from "../../assets/template_assets/images/backgrounds/main-slider-1-1.jpg";
-import MainSlider2 from "../../assets/template_assets/images/backgrounds/main-slider-1-2.jpg";
-import MainSlider3 from "../../assets/template_assets/images/backgrounds/main-slider-1-3.jpg";
+import MainSlider1 from "../../../assets/template_assets/images/backgrounds/main-slider-1-1.jpg";
+import MainSlider2 from "../../../assets/template_assets/images/backgrounds/main-slider-1-2.jpg";
+import MainSlider3 from "../../../assets/template_assets/images/backgrounds/main-slider-1-3.jpg";
 
 const Mainbanner = () => {
   return (
