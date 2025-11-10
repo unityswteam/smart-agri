@@ -20,8 +20,7 @@ const Footer = () => {
               {/* Floating Shape */}
               <div
                 className="site-footer-shape-1 float-bob-x"
-                style={{ backgroundImage: `url(${FooterShape})` }}
-              ></div>
+                style={{ backgroundImage: `url(${FooterShape})` }} ></div>
 
               <div className="row">
                 {/* About */}
